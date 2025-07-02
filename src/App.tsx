@@ -172,7 +172,7 @@ export default function RamseyGame() {
   /* ──────────── render ──────────── */
   return (
     <div className="min-h-screen flex flex-col items-center gap-6 p-6 bg-gray-100">
-      <h1 className="text-3xl font-bold">Ramsey Game Simulator</h1>
+      <h1 className="text-3xl font-bold">Ramsey Game</h1>
 
       {/* control panel */}
       <Card>
