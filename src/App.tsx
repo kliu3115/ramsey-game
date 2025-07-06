@@ -6,7 +6,6 @@ import type {
   ReactNode,
 } from "react";
 
-/* ──────────── Tiny in‑file UI helpers ──────────── */
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "outline";
   className?: string;
@@ -53,14 +52,11 @@ const CardContent = ({ className = "", children }: CardProps) => (
   <div className={`p-4 ${className}`}>{children}</div>
 );
 
-/* ──────────── Main component ──────────── */
 export default function RamseyGame() {
-  /* ── user‑configurable inputs ── */
   const [nInput, setNInput] = useState(6);
   const [kInput, setKInput] = useState(3);
   const [playersInput, setPlayersInput] = useState(2);
 
-  /* ── live game state ── */
   const [n, setN] = useState(6);
   const [k, setK] = useState(3);
   const [numPlayers, setNumPlayers] = useState(2);
@@ -75,7 +71,6 @@ export default function RamseyGame() {
   const [winningClique, setWinningClique] = useState<number[] | null>(null);
   const [history, setHistory] = useState<EdgeKey[]>([]);
 
-  /* ── helpers ── */
   const initEdges = (nodes: number) => {
     const obj: Record<EdgeKey, Color | null> = {};
     for (let i = 0; i < nodes; i++)
@@ -83,7 +78,6 @@ export default function RamseyGame() {
     return obj;
   };
 
-  /* initialize board whenever n changes */
   useEffect(() => {
     setEdges(initEdges(n));
   }, [n]);
@@ -99,7 +93,6 @@ export default function RamseyGame() {
     setHistory([]);
   };
 
-  /* circular layout for nodes */
   const positions = useMemo(() => {
     const R = 200,
       cx = 250,
@@ -110,7 +103,6 @@ export default function RamseyGame() {
     });
   }, [n]);
 
-  /* ── gameplay ── */
   const handleEdgeClick = (key: EdgeKey) => {
     if (winner || edges[key]) return;
     const color = COLORS[currentPlayerIdx];
@@ -136,7 +128,6 @@ export default function RamseyGame() {
     setCurrentPlayerIdx((idx) => (idx - 1 + numPlayers) % numPlayers);
   };
 
-  /* return winning clique array or null */
   const checkWin = (
     color: Color,
     edgeState: Record<EdgeKey, Color | null>
@@ -169,12 +160,10 @@ export default function RamseyGame() {
     ? `${winner.toUpperCase()} WINS!`
     : `Current turn: ${COLORS[currentPlayerIdx].toUpperCase()}`;
 
-  /* ──────────── render ──────────── */
   return (
     <div className="min-h-screen flex flex-col items-center gap-6 p-6 bg-gray-100">
       <h1 className="text-3xl font-bold">Ramsey Game</h1>
 
-      {/* control panel */}
       <Card>
       <CardContent>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
@@ -231,9 +220,7 @@ export default function RamseyGame() {
     <br />
     <hr style={{ display: "block", height: "1px", width: "50%", border: "none", borderTop: "1px solid #ccc", margin: "1rem 0" }} />
       <div style={{ fontWeight: "bold", marginBottom: "4px", fontSize: "20px" }}>{turnText}</div>
-      {/* board */}
       <svg width={500} height={500} className="bg-white rounded-2xl shadow-md">
-        {/* edges */}
         {Object.keys(edges).map((key) => {
           const [iS, jS] = key.split("-");
           const i = +iS,
@@ -268,7 +255,6 @@ export default function RamseyGame() {
           );
         })}
 
-        {/* nodes */}
         {positions.map(({ x, y }, idx) => {
           const inWin = winningClique && winningClique.includes(idx);
           const strokeCol = inWin && winner ? winner : "#1e293b";
